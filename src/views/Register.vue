@@ -6,12 +6,6 @@
       <van-field v-model="password" type="password" label="密码" placeholder="请输入密码" required/>
       <van-field v-model="password1" type="password" label="确认密码" placeholder="请输入密码" required/>
     </van-cell-group>
-    <van-cell-group>
-      <van-field v-model="sms" center clearable label="短信验证码" placeholder="请输入短信验证码" required>
-        <van-button slot="button" size="small" type="default">发送验证码</van-button>
-      </van-field>
-    </van-cell-group>
-
     <div class="btn" @click="register">
       <van-button type="info" style="width:289px;height:40px;" round>注册</van-button>
     </div>
