@@ -153,6 +153,8 @@
             style="display:flex;flex-direction:column;align-items:center;"
           >
             <van-image
+            width="80%"
+            height="80%"
                src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2379182273,2095371221&fm=27&gp=0.jpg"
           />西红柿
             <van-card desc="￥4.75元/每袋" price="0.95元/每斤" origin-price="1.18"/>
@@ -161,7 +163,7 @@
         <van-col span="6">
           <router-link
             to="/vegetable"
-            style="display:flex;flex-direction:column;align-items:center;width:100%;height:100%"
+            style="display:flex;flex-direction:column;align-items:center;"
           >
             <van-image
             width="100%"
@@ -174,7 +176,7 @@
         <van-col span="6">
           <router-link
             to="/vegetable"
-            style="display:flex;flex-direction:column;align-items:center;width:100%;height:100%"
+            style="display:flex;flex-direction:column;align-items:center;"
           >
             <van-image
             width="60%"
