@@ -49,15 +49,21 @@
 
       <!-- 分类展示结束 -->
       <!-- 秒杀开始 -->
+<<<<<<< HEAD
       <van-row style="padding:5%; ">
         <van-col span="6">超值秒杀</van-col>
         <van-col span="18" ref="miaoSha" v-if="show" style="font-size:12%;">
+=======
+      <van-row style="padding:5%;">
+        <van-col span="6">超值秒杀</van-col>
+        <van-col span="18" ref="miaoSha" v-if="show">
+>>>>>>> ec61343df46ad42744db5f720549f0736f120450
           距活动开始还剩
           <span>{{sum}}</span>
         </van-col>
         <van-col span="18" v-if="show1">秒杀开始</van-col>
       </van-row>
-      <van-row type="flex" justify="space-around">
+       <van-row type="flex" justify="space-around">
         <van-col span="6">
           <router-link
             to="/vegetable"
@@ -191,8 +197,12 @@ export default {
       act: 2,
       sum: "",
       show: true,
+<<<<<<< HEAD
       show1: false,
       classify: []
+=======
+      show1: false
+>>>>>>> ec61343df46ad42744db5f720549f0736f120450
     };
   },
 
@@ -229,6 +239,7 @@ export default {
       .catch(error => {
         console.log(error);
       });
+<<<<<<< HEAD
 
     //秒杀倒计时
     let itemTime = setInterval(function() {
@@ -236,6 +247,14 @@ export default {
       let stopTime = new Date("2019-7-27 23:00:00");
       let sx = stopTime - day;
       let h = toS(parseInt(sx / 1000 / 60 / 60));
+=======
+       //秒杀倒计时
+    let itemTime = setInterval(function() {
+      let day = new Date();
+      let stopTime = new Date("2019-6-27 23:00:00");
+      let sx = stopTime - day;
+      let h = toS(parseInt(sx / 1000 / 60 / 60));    
+>>>>>>> ec61343df46ad42744db5f720549f0736f120450
       let m = toS(parseInt((sx / 1000 / 60) % 60));
       let s = toS(parseInt((sx / 1000) % 60));
       _this.sum = h + "时" + m + "分" + s + "秒";
@@ -252,6 +271,7 @@ export default {
         _this.show1 = true;
       }
     }, 1000);
+<<<<<<< HEAD
     //分类导航请求
     axios({
       url: "http://106.12.45.42:8080/MeledMall/menu/parentMenu",
@@ -261,6 +281,8 @@ export default {
       _this.classify = data.data.info;
       console.log(_this.classify);
     });
+=======
+>>>>>>> ec61343df46ad42744db5f720549f0736f120450
   },
   methods: {
     name(msg) {
