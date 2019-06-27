@@ -15,6 +15,7 @@
 
 <script>
 import axios from "axios";
+import qs from "Qs";
 export default {
   name: "Register",
 
@@ -36,19 +37,24 @@ export default {
       let _this = this;
       let iphone = _this.username;
       console.log(iphone);
-       
+       let pass=_this.password
+       console.log(pass)
       if (/^1[3|4|5|8][0-9]\d{8}$/.test(iphone)) {
-        axios
-          .get("http://jx.xuzhixiang.top/ap/api/reg.php", {
-            params: {
-              username: _this.username,
-              password: _this.password
-            }
+       axios({
+          url:"http://106.12.45.42:8080/MeledMall/user/register", 
+          method:'post',
+          data: qs.stringify({
+              phonenum:iphone,
+              password:pass
+            }),
+            // headers:{'Content-Type':'application/x-www-form-urlencoded'}
           })
           .then(res => {
             console.log(res.data);
-            alert(res.data.msg);
+            alert(res.data.info);
             _this.$router.push('/login')
+          }).catch((erro)=>{
+            console.log(erro)
           });
       }else{
         alert('请正确填写手机号码')

@@ -4,100 +4,18 @@
 <!-- top -->
 
     <van-tabs v-model="act" animated>
-      <van-tab title="新鲜蔬菜">
-        <van-card
-            :price="item.pprice"
-            :desc="item.pdesc"  
-            :title="item.pname"
-            :thumb="item.pimg"
-            v-for="(item,index) in list" :key="index" 
-            @click="tap(item.pid)"
-        />
-      </van-tab>
-      <van-tab title="时令水果">
-        <van-card
-            :price="item.pprice"
-            :desc="item.pdesc"  
-            :title="item.pname"
-            :thumb="item.pimg"
-            v-for="(item,index) in list" :key="index" 
-        />
-      </van-tab>
-      <van-tab title="肉畜类">
-        <van-card
-            :price="item.pprice"
-            :desc="item.pdesc"  
-            :title="item.pname"
-            :thumb="item.pimg"
-            v-for="(item,index) in list" :key="index" 
-        />
-      </van-tab>
-      <van-tab title="方便菜">
-        <van-card
-            :price="item.pprice"
-            :desc="item.pdesc"  
-            :title="item.pname"
-            :thumb="item.pimg"
-            v-for="(item,index) in list" :key="index" 
-        />
-      </van-tab>
-      <van-tab title="水产冻货">
-        <van-card
-            :price="item.pprice"
-            :desc="item.pdesc"  
-            :title="item.pname"
-            :thumb="item.pimg"
-            v-for="(item,index) in list" :key="index" 
-        />
-      </van-tab>
-      <van-tab title="蛋品豆面">
-        <van-card
-            :price="item.pprice"
-            :desc="item.pdesc"  
-            :title="item.pname"
-            :thumb="item.pimg"
-            v-for="(item,index) in list" :key="index" 
-        />
-      </van-tab>
-      <van-tab title="米面粮油">
-        <van-card
-            :price="item.pprice"
-            :desc="item.pdesc"  
-            :title="item.pname"
-            :thumb="item.pimg"
-            v-for="(item,index) in list" :key="index" 
-        />
-      </van-tab>
-      <van-tab title="休闲酒饮">
-        <van-card
-            :price="item.pprice"
-            :desc="item.pdesc"  
-            :title="item.pname"
-            :thumb="item.pimg"
-            v-for="(item,index) in list" :key="index" 
-        />
-      </van-tab>
-      <van-tab title="调料干货">
-        <van-card
-            :price="item.pprice"
-            :desc="item.pdesc"  
-            :title="item.pname"
-            :thumb="item.pimg"
-            v-for="(item,index) in list" :key="index" 
-        />
-      </van-tab>
-      <van-tab title="餐厨用具">
-        <van-card
-            :price="item.pprice"
-            :desc="item.pdesc"  
-            :title="item.pname"
-            :thumb="item.pimg"
-            v-for="(item,index) in list" :key="index" 
-        />
-      </van-tab>
+      <van-tab :title="item.menu" v-for="(item,index) in list" :key="index" @click="nav">
+         <van-card
+            :price="item.price"
+            :desc="item.desc"  
+            :title="item.name"
+            :thumb="item.photo"
+            v-for="(item,index) in listItem" :key="index" 
+            @click="tap(item.id)"
+        /> 
+      </van-tab> 
+     
     </van-tabs>
-
-
         <van-tabbar
           v-model="active"
           active-color="#07c160"
@@ -115,14 +33,19 @@
 <script>
 import Head2 from '@/components/Head2'
 import axios from 'axios'
+import qs from "Qs";
+
 
 export default {
     name:"Vegetable",
     data() {
+      
         return {
           active:1,
-          act:0,
-          list:[]
+          act:"",
+          list:[],
+          id:'',
+         listItem:[]
         }
     },
     components:{
@@ -131,19 +54,33 @@ export default {
     methods:{
       tap(id){
         this.$router.push({name:"Detail",query:{id:id}})
-      }
-     
-      
+      },
+      nav(){
+        console.log(1)
+      }     
     },
     mounted() {
       let _this = this
-      axios.get('http://jx.xuzhixiang.top/ap/api/productlist.php',{
-        params:{
-          uid:12441
-        }
+      //分类导航请求
+      axios({
+          url:"http://106.12.45.42:8080/MeledMall/menu/parentMenu", 
+          method:'post',
       }).then(data=>{
-        // console.log(data.data.data)
-        _this.list = data.data.data
+        console.log(data.data.info)
+        _this.list = data.data.info      
+        _this.act= this.$route.query.id-1;
+      });
+      //具体分类商品列表
+      axios({
+        url:'http://106.12.45.42:8080/MeledMall/menu/childMenu',
+        method:'post',
+        // headers:{'Content-Type':'application/x-www-form-urlencoded'},
+        data:qs.stringify({
+          id:_this.$route.query.id
+        })
+      }).then(data=>{
+        console.log(data.data.info)
+        _this.listItem=data.data.info
       })
     },
 }

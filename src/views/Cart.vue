@@ -14,16 +14,17 @@
       :key="index"
       class="card"
     >
-    
-
       <div slot="footer">
-
         <!-- <van-checkbox v-model="checked" :checked="item.checked" @click="singerShopSelected(item)" class="check" ></van-checkbox> -->
 
-        <input   class="check" type="checkbox" :checked="item.checked" @click="singerShopSelected(item)">
+        <input
+          class="check"
+          type="checkbox"
+          :checked="item.checked"
+          @click="singerShopSelected(item)"
+        >
 
         <!-- 单选 -->
-
 
         <van-stepper
           v-model="item.pnum"
@@ -38,14 +39,13 @@
         <span>总价:{{item.pnum*item.pprice}}</span>
 
         <van-button size="mini" @click="del(item,item.pid)">删除</van-button>
-
       </div>
     </van-card>
 
     <!-- 商品卡片 -->
 
     <van-submit-bar :price="totalPrice" button-text="提交订单" @submit="onSubmit(totalPrice)">
-      <input  type="checkbox" :checked="isSelectedAll" @click="selectedAll(isSelectedAll)" >全选
+      <input type="checkbox" :checked="isSelectedAll" @click="selectedAll(isSelectedAll)">全选
     </van-submit-bar>
 
     <!-- 总金额，结算 -->
@@ -63,7 +63,8 @@
 <script>
 import Head3 from "@/components/Head3";
 import axios from "axios";
-import { Toast } from 'vant';
+import qs from "Qs";
+import { Toast } from "vant";
 export default {
   // inject: ["reload"],
   name: "Cart",
@@ -73,59 +74,56 @@ export default {
       name: "购物列表",
       imageURL: "",
       value: 1,
-     
-      isSelectedAll:false,
+
+      isSelectedAll: false,
       list: [],
       imageURL: "",
       yyy: "热卖",
-      totalPrice:0
+      totalPrice: 0
     };
-  },  
+  },
   components: {
     Head3
   },
   methods: {
-
-   selectedAll(flag){
-
-                this.isSelectedAll=!flag;        
-                  this.list.forEach((item, i)=>{
-                    if(typeof item.checked=="undefined"){
-                      this.$set(item,"checked",!flag);
-
-                    }else{
-                      item.checked=!flag
-                    }
-                  });
-       this.getAllShopPrice()
-   },
+    selectedAll(flag) {
+      this.isSelectedAll = !flag;
+      this.list.forEach((item, i) => {
+        if (typeof item.checked == "undefined") {
+          this.$set(item, "checked", !flag);
+        } else {
+          item.checked = !flag;
+        }
+      });
+      this.getAllShopPrice();
+    },
     onSubmit(money) {
-      this.$router.push({name:"Paymoney",query:{money:money}});
+      this.$router.push({ name: "Paymoney", query: { money: money } });
     },
     onChange(num, id) {
+
       axios({
-        url: "http://jx.xuzhixiang.top/ap/api/cart-update-num.php",
-        params: {
-          uid: 12441,
-          pid: id,
-          pnum: num
-        }
+        url: "http://106.12.45.42:8080/MeledMall/shopCar/showShopCar",
+        method: "post",
+        data: qs.stringify({
+          mid: mid,
+          uid: uid,
+          mname: name,
+          mprice: price,
+          mphoto: photo
+        })
       }).then(data => {
         // console.log(data.data)
-        
       });
-       this.getAllShopPrice()
+      this.getAllShopPrice();
     },
     // 更新购物车中的数量
-    del(p,id) {
+    del(p, id) {
       // console.log(id,p);
-      
-       
 
- this.list=this.list.filter(item=>item!==p)
- Toast.success('删除成功');
-  this.getAllShopPrice()
-
+      this.list = this.list.filter(item => item !== p);
+      Toast.success("删除成功");
+      this.getAllShopPrice();
 
       var _this = this;
       axios({
@@ -137,67 +135,67 @@ export default {
       }).then(data => {
         //  console.log(data);
         // this.reload();
-        
-
       });
-       this.getAllShopPrice()
+      this.getAllShopPrice();
     },
     // 删除商品
 
-
-
-    getAllShopPrice(){
-      let totalPrice=0;
-      this.list.forEach((item,i)=>{
-        if(item.checked){
-           totalPrice+=item.pprice*item.pnum*100;
+    getAllShopPrice() {
+      let totalPrice = 0;
+      this.list.forEach((item, i) => {
+        if (item.checked) {
+          totalPrice += item.pprice * item.pnum * 100;
         }
-      })
-        this.totalPrice=totalPrice;
+      });
+      this.totalPrice = totalPrice;
     },
-// 计算总价
-    singerShopSelected(item){
-        if(typeof item.checked=="undefined"){
-          this.$set(item,"checked",true);
-        }else{
-          item.checked=!item.checked;
-        }
-        this.getAllShopPrice()
-        this.hasSelectedAll()
-
+    // 计算总价
+    singerShopSelected(item) {
+      if (typeof item.checked == "undefined") {
+        this.$set(item, "checked", true);
+      } else {
+        item.checked = !item.checked;
+      }
+      this.getAllShopPrice();
+      this.hasSelectedAll();
     },
-// 单选
+    // 单选
 
-  hasSelectedAll(){
-      let flag=true;
-      this.list.forEach((item,i)=>{
-        if(!item.checked){
-          flag=false;
+    hasSelectedAll() {
+      let flag = true;
+      this.list.forEach((item, i) => {
+        if (!item.checked) {
+          flag = false;
         }
-      })
-      this.isSelectedAll=flag;
-  }
+      });
+      this.isSelectedAll = flag;
+    }
 
-// 判断是否全选
-
+    // 判断是否全选
   },
   mounted() {
-
-    var _this = this;
+    //购物车展示
+    let _this = this;
+    let uid = localStorage.getItem("token");
+    console.log(uid);
     axios({
-      url: "http://jx.xuzhixiang.top/ap/api/cart-list.php",
-      params: {
-        id: 12441
-      }
-    }).then(data => {
-      _this.list = data.data.data;
-        // console.log(_this.list)
-     
-
-      
-    });
+      url: "http://106.12.45.42:8080/MeledMall/shopCar/showShopCar",
+      method: "post",
+      data: qs.stringify({
+        id: uid
+      })
+    })
+      .then(res => {
+        console.log(res.data);
+        // document.write(res.data.info)
+        // _this.list = res.data.info;
+        // console.log(_this.recommend);
+      })
+      .catch(error => {
+        console.log(error);
+      });
     // 获取购物车中的数据
-     this.getAllShopPrice()
+    this.getAllShopPrice();
   }
 };
 </script>

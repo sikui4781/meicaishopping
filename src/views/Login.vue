@@ -27,6 +27,7 @@
 
 <script>
 import axios from "axios";
+import qs from "Qs";
 export default {
   name: "Login",
 
@@ -39,36 +40,45 @@ export default {
     };
   },
   methods: {
+    
     login() {
+      let _this=this;
       let username = this.$refs.user.value;
       let password = this.$refs.pass.value;
       console.log(username, password);
       if (/^1[3|4|5|8][0-9]\d{8}$/.test(username)) {
         alert("登录成功");
         //登录请求
-        axios
-          .get("http://jx.xuzhixiang.top/ap/api/login.php", {
-            params: {
-              username: username,
+  
+        axios({
+          url:"http://106.12.45.42:8080/MeledMall/user/login", 
+          method:'post',
+          data: qs.stringify({
+              phonenum: username,
               password: password
-            }
+            }),
+            // headers:{'Content-Type':'application/x-www-form-urlencoded'}
           })
           .then(data => {
             console.log(data);
+            _this.$router.push({ name: "Main", query: { id: username } });
             if (data.data.code == 1) {
-              localStorage.setItem("token", data.data.data.id);
-              localStorage.setItem("username", data.data.data.username);
+              localStorage.setItem("token",data.data.info.id);
+              localStorage.setItem("username",data.data.info.phonenum);
             } else {
-              alert(data.data.msg);
+              console.log(data.data.info);
             }
+          }).catch((erro)=>{
+            console.log(erro)
           });
-        this.$router.push("/main");
+         
+
       } else {
         alert("请正确填写手机号");
       }
     },
     mounted() {
-      this.$emit("tit", this.name);
+      this.$emit("tits", this.name);
     }
   }
 };

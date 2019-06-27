@@ -11,7 +11,7 @@ import Vegetable from '@/views/Vegetable'
 import Ulist from '@/views/Ulist'
 import Discount from '@/views/Discount'
 import Detail from '@/views/Detail'
-
+import Search from '@/views/Search'
 
 import Cart from '@/views/Cart'
 import Mine from '@/views/Mine'
@@ -48,20 +48,15 @@ export default new Router({
                       name:"Login",
                       component:Login
                     },
-                    
-        
-      
+
                 ]
     },
     {
       path:"/main",
       name:"Main",
       component:Main,
- 
-
    },   
-    
-            {
+      {
               path:"/vegetable",
               name:"Vegetable",
               component:Vegetable
@@ -138,10 +133,12 @@ export default new Router({
               name:'Forgetfind',
               component:Forgetfind
             },
+            {
+              path:'/search',
+            name:'Search',
+            component:Search
+            },
       {path:"*",redirect:"/main"}      
-                    
-      
-            
 
   ]
 })

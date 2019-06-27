@@ -4,25 +4,28 @@
 <!-- top -->
 
         <van-tabs v-model="act" animated>
-      <van-tab title="为我推荐">
-        <van-card
-            :price="item.pprice"
-            :desc="item.pdesc"  
-            :title="item.pname"
-            :thumb="item.pimg"
-            v-for="(item,index) in list" :key="index" 
-            @click="tap(item.pid)"
-        />
-      </van-tab>
-      <van-tab title="常用清单">
-        <van-card
-            :price="item.pprice"
-            :desc="item.pdesc"  
-            :title="item.pname"
-            :thumb="item.pimg"
-            v-for="(item,index) in list" :key="index" 
-        />
-      </van-tab>
+      <van-tab title="为你推荐">
+          <van-card
+           :desc="item.desc"
+            :price="item.price"
+            :title="item.name"
+            :thumb="item.photo"
+            v-for="(item, index) in recommend"
+            :key="index"
+            @click="tap(item.id)"
+          />
+        </van-tab>
+        <van-tab title="常用清单">
+          <van-card
+            :price="item.price"
+            :desc="item.desc"
+            :title="item.name"
+            :thumb="item.photo"
+            v-for="(item, index) in recommend"
+            :key="index"
+            @click="tap(item.id)"
+          />
+        </van-tab>
     </van-tabs>
 
 
@@ -43,6 +46,7 @@
 <script>
 import Head2 from '@/components/Head2'
 import axios from 'axios'
+import qs from 'Qs'
 
 export default {
     name:"Ulist",
@@ -50,7 +54,8 @@ export default {
         return {
            active:2,
            act:0,
-           list:[]
+           list:[],
+           recommend:[]
         }
     },
     components:{
@@ -62,19 +67,27 @@ export default {
       //  console.log(id);
        
         this.$router.push({name:"Detail",query:{id:id}})
+
+        
      }
       
     },
     mounted() {
         this.$emit("tit",this.name)
         let _this = this
-        axios.get('http://jx.xuzhixiang.top/ap/api/productlist.php',{
-          params:{
-            uid:12441
-          }
-        }).then(data=>{
-          _this.list = data.data.data
-        })
+        //为你推荐和常用清单
+    axios({
+      url: "http://106.12.45.42:8080/MeledMall/menu/recommend",
+      method: "post",
+      data: qs.stringify({})
+    })
+      .then(res => {
+        _this.recommend = res.data.info;
+        console.log(_this.recommend);
+      })
+      .catch(error => {
+        console.log(error);
+      });
     },
 }
 

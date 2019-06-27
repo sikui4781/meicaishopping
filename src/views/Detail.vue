@@ -4,14 +4,14 @@
 
     <van-swipe class="goods-swipe" :autoplay="3000">
       <van-swipe-item>
-        <img :src="list.pimg">
+        <img :src="list.photo">
       </van-swipe-item>
     </van-swipe>
 
     <van-cell-group>
       <van-cell>
-        <div class="goods-title">{{ list.pname }}</div>
-        <div class="goods-price">￥{{ list.pprice }}</div>
+        <div class="goods-title">{{ list.name }}</div>
+        <div class="goods-price">￥{{ list.price }}</div>
         <van-stepper v-model="value" max="5" integer/>
       </van-cell>
       <van-cell class="goods-express">
@@ -23,7 +23,7 @@
     <van-goods-action>
       <van-goods-action-icon icon="chat-o" text="客服" @click="onClickService"/>
       <van-goods-action-icon icon="cart-o" text="购物车" @click="onClickCart"/>
-      <van-goods-action-button type="warning" text="加入购物车" @click="onClickAddCart"/>
+      <van-goods-action-button type="warning" text="加入购物车" @click="onClickAddCart(list.id, list.price,list.name,list.photo)"/>
       <van-goods-action-button type="danger" text="立即购买" @click="onClickBuying"/>
     </van-goods-action>
   </div>
@@ -32,12 +32,14 @@
 <script>
 import { Toast } from "vant";
 import axios from "axios";
+import qs from "Qs";
 export default {
   name: "Detail",
   data() {
     return {
       list: [],
-      value: 1
+      value: 1,
+      recommend:''
     };
   },
   methods: {
@@ -50,19 +52,32 @@ export default {
     onClickCart() {
       this.$router.push("/cart");
     },
-    onClickAddCart() {
-      axios
-        .get("http://jx.xuzhixiang.top/ap/api/add-product.php", {
-          params: {
-            uid: 12441,
-            pid: this.$route.query.id,
-            pnum: this.value
-          }
-        })
-        .then(data => {
-         
-          Toast.success("加购物车成功");
-        });
+    onClickAddCart(mid, price,name,photo) {
+      let _this = this
+      let uid = localStorage.getItem('token')
+      console.log(uid)
+      axios({
+      url: "http://106.12.45.42:8080/MeledMall/shopCar/addShopCar",
+      method: "post",
+      data: qs.stringify({
+        mid:mid,
+        uid:uid,
+        mname:name,
+        mprice:price,
+        mphoto:photo
+      })
+    })
+      .then(res => {
+        // _this.list = res.data.info;
+        // console.log(_this.list);
+        Toast.success("加购物车成功");
+      })
+      .catch(error => {
+        console.log(error);
+        
+      });
+          
+      
     },
     onClickBuying() {
       axios
@@ -80,17 +95,23 @@ export default {
     }
   },
   mounted() {
-    let _this = this;
-    // console.log(this.$route.query.id)
-    axios
-      .get("http://jx.xuzhixiang.top/ap/api/detail.php", {
-        params: {
-          id: _this.$route.query.id
-        }
+    
+    let _this = this
+      axios({
+      url: "http://106.12.45.42:8080/MeledMall/menu/child",
+      method: "post",
+      data: qs.stringify({
+        id: _this.$route.query.id
       })
-      .then(data => {
-        // console.log(data.data.data)
-        _this.list = data.data.data;
+    })
+      .then(res => {
+        console.log(res.data)
+        _this.list = res.data.info;
+        // console.log(_this.recommend);
+      })
+      .catch(error => {
+        console.log(error);
+        
       });
   }
 };
