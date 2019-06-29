@@ -36,17 +36,17 @@ export default {
     return {
       username: "",
       password: "",
-      name: "登录"
+      name:"登录"
     };
   },
   methods: {
     
     login() {
       let _this=this;
-      let username = this.$refs.user.value;
-      let password = this.$refs.pass.value;
+      let username = _this.$refs.user.value;
+      let password = _this.$refs.pass.value;
       console.log(username, password);
-      if (/^1[3|4|5|8][0-9]\d{8}$/.test(username)) {
+      if (/^1[3|5|8][0-9]\d{8}$/.test(username)) {
         alert("登录成功");
         //登录请求
   

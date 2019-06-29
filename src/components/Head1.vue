@@ -2,9 +2,6 @@
   <div>
     <van-nav-bar
       :title="tits"
-    
-    
-
       @click-left="onClickLeft"
       @click-right="onClickRight"
   />

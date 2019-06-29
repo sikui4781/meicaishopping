@@ -31,7 +31,7 @@ export default {
       value: "",
       list: []
     };
-  },
+  }, 
   methods: {
     onSearch() {
       let _this = this;

@@ -15,8 +15,7 @@
         <van-stepper v-model="value" max="5" integer/>
       </van-cell>
       <van-cell class="goods-express">
-        <van-col span="10">运费：免运费</van-col>
-        
+        <van-col span="10">运费：免运费</van-col>       
       </van-cell>
     </van-cell-group>
 
