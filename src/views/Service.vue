@@ -10,7 +10,7 @@
       </van-col>
       <van-col span="11" class="icon">
         <van-col span="6">
-          <a href="tel:iphoneNumber">
+          <a href="tel:10086">
             <van-icon name="service" tag="span" size="32px"/>
           </a>
           <p>在线客服</p>
@@ -31,13 +31,12 @@
   </div>
 </template>
 <script>
-let iphone = localStorage.getItem("username");
-console.log(iphone);
+
 export default {
   name: "Sessage",
   data() {
     return {
-      iphoneNumber: iphone,
+      
       activeName: "1"
     };
   },

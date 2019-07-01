@@ -173,6 +173,7 @@ export default {
       console.log(1);
       axios({
         url: "http://106.12.45.42:8080/MeledMall/user/recharge",
+        method:'post',
         data: qs.stringify({
           balance: this.jinE,
           id: uid

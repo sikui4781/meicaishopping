@@ -36,8 +36,8 @@ export default {
     return {
       showList: "",
       chosenCoupon: -1,
-      coupons: [coupon],
-      disabledCoupons: [coupon]
+      coupons: [],
+      disabledCoupons: []
     };
   },
   methods: {
@@ -53,14 +53,31 @@ export default {
     }
   },
   mounted() {
+    let _this = this;
     axios({
       url: "http://106.12.45.42:8080/MeledMall/coupon/showCoupon",
+      method: "post",
+      data: qs.stringify({
+        id: uid
+      })
+    })
+      .then(data => {
+        console.log(data.data);
+        // _this.coupons = data.data.info;
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    axios({
+      url: "http://106.12.45.42:8080/MeledMall/coupon/showFailureCoupon",
+      method: "post",
       data: qs.stringify({
         id: uid
       })
     })
       .then(data => {
         console.log(data);
+        // _this.disabledCoupons = data.data;
       })
       .catch(error => {
         console.log(error);
