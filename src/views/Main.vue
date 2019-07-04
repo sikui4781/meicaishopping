@@ -51,11 +51,8 @@
       <!-- 秒杀开始 -->
       <van-row style="padding:5%; ">
         <van-col span="6">超值秒杀</van-col>
-        <van-col span="18" ref="miaoSha" v-if="show" style="font-size:12%;">
-         
-          <van-col span="24">距离活动开始还剩：{{h}}时{{m}}分{{s}}秒</van-col>
-          
-          
+        <van-col span="18" ref="miaoSha" v-if="show" style="font-size:12%;">   
+          <van-col span="24">距离活动开始还剩：{{h}}时{{m}}分{{s}}秒</van-col>  
         </van-col>
         <van-col span="18" v-if="show1">秒杀开始</van-col>
       </van-row>
