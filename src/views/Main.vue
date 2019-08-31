@@ -4,7 +4,6 @@
       <Head :tits="msga"></Head>
     </header>
     <!-- 头部 -->
-<!-- 用户登录界面 -->
     <!-- 子路由显示处 -->
     <section style="overflow:auto;flex:1">
       <!-- //用户名显示 退出入口 -->

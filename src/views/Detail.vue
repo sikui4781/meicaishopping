@@ -8,7 +8,6 @@
       </van-swipe-item>
     </van-swipe>
 <!-- GIT小乌龟版本 -->
-  <!-- 112233 -->
     <van-cell-group>
       <van-cell>
         <div class="goods-title">{{ list.name }}</div>
